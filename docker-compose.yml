@@ -1,0 +1,28 @@
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - server/.env
+    environment:
+      - NODE_ENV=production
+      - DB_PATH=/data/data.sqlite
+      - SESSIONS_DB=/data/sessions.sqlite
+      - LOG_DIR=/logs
+      - PUBLIC_ORIGIN=https://nordinesahel-portfolio.fr
+      - CORS_ORIGIN=https://nordinesahel-portfolio.fr
+      - SESSION_COOKIE_SECURE=auto
+      - TRUST_PROXY=1
+      - DATA_RETENTION_DAYS=365
+      - LOG_RETENTION_DAYS=365
+    volumes:
+      - ./server/storage:/data
+      - ./server/logs:/logs
+      - ./index.html:/app/index.html
+      - ./admin.html:/app/admin.html
+      - ./styles.css:/app/styles.css
+      - ./scripts:/app/scripts
+      - ./server:/app/server
+      - /app/server/node_modules
+    restart: unless-stopped

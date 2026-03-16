@@ -1,0 +1,10 @@
+﻿# Logs & runtime
+server/logs/
+server/data.sqlite
+server/.env
+
+# Node
+server/node_modules/
+
+server/storage/
+server/sessions.sqlite

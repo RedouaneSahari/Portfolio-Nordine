@@ -1,0 +1,7 @@
+.git
+server/node_modules
+server/logs
+server/storage
+server/data.sqlite
+server/sessions.sqlite
+server/.env

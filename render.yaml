@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: nordine-portfolio
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    autoDeploy: true
+    healthCheckPath: /api/health
+    disk:
+      name: portfolio-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: /data/data.sqlite
+      - key: SESSIONS_DB
+        value: /data/sessions.sqlite
+      - key: LOG_DIR
+        value: /data/logs
+      - key: SESSION_COOKIE_SECURE
+        value: auto
+      - key: TRUST_PROXY
+        value: "1"
+      - key: DATA_RETENTION_DAYS
+        value: "365"
+      - key: LOG_RETENTION_DAYS
+        value: "365"
+      - key: SMTP_ENABLED
+        value: "false"
+      - key: FORMSUBMIT_ENABLED
+        value: "true"
+      - key: PUBLIC_ORIGIN
+        value: https://ton-service.onrender.com
+      - key: CORS_ORIGIN
+        value: https://ton-service.onrender.com
+      - key: CONTACT_TO
+        sync: false
+      - key: CONTACT_FROM
+        sync: false
+      - key: FORMSUBMIT_RECIPIENT
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false

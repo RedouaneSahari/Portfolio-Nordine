@@ -1,0 +1,186 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard Admin | Nordine</title>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#0f1a24">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260306-futurist2">
+</head>
+<body data-admin-only="true">
+  <div class="page">
+    <main>
+      <section class="section admin" id="admin" hidden>
+        <div class="section-header">
+          <p class="section-label">Admin</p>
+          <h2>Dashboard priv&eacute;</h2>
+          <p class="section-intro">Pilotage centralis&eacute; des messages, des visites et de l&apos;activit&eacute; serveur.</p>
+        </div>
+
+        <div class="admin-shell">
+          <div class="card admin-login" id="adminLoginCard">
+            <div class="admin-login-shell">
+              <div class="admin-login-copy">
+                <p class="section-label">Acc&egrave;s s&eacute;curis&eacute;</p>
+                <h3>Connexion admin</h3>
+                <p class="muted">Espace de supervision priv&eacute; pour suivre les messages entrants, les visites et les logs serveur dans une vue plus structur&eacute;e.</p>
+                <div class="badge-row">
+                  <span class="badge">Messages</span>
+                  <span class="badge">Visites</span>
+                  <span class="badge">Logs</span>
+                </div>
+              </div>
+
+              <form id="adminLoginForm" class="admin-form">
+                <div class="form-field">
+                  <label for="adminUsername">Identifiant</label>
+                  <input id="adminUsername" name="username" type="text" autocomplete="username" required>
+                </div>
+
+                <div class="form-field">
+                  <label for="adminPassword">Mot de passe</label>
+                  <input id="adminPassword" name="password" type="password" autocomplete="current-password" required>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn primary" type="submit">Se connecter</button>
+                </div>
+
+                <p class="form-status" id="adminStatus" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+          </div>
+
+          <div class="admin-dashboard" id="adminDashboard" hidden>
+            <div class="admin-toolbar">
+              <div class="admin-user">
+                <span class="badge">Session admin</span>
+                <span class="badge admin-status" id="adminStatusBadge">Connect&eacute;</span>
+                <strong id="adminUserLabel"></strong>
+              </div>
+              <div class="admin-actions">
+                <button class="btn small ghost" id="adminThemeToggle" type="button" aria-pressed="false">Mode sombre</button>
+                <button class="btn small" id="adminRefresh" type="button">Actualiser</button>
+                <button class="btn small ghost" id="adminLogout" type="button">Se d&eacute;connecter</button>
+              </div>
+            </div>
+
+            <article class="card admin-command-bar">
+              <div class="admin-command-copy">
+                <p class="section-label">Pilotage</p>
+                <h3>Console de supervision</h3>
+                <p class="muted">Vue condens&eacute;e de l&apos;activit&eacute; utile: messages, visites, recherche active et synchronisation des journaux.</p>
+              </div>
+              <div class="admin-command-pills">
+                <span class="badge">Console</span>
+                <span class="badge">CSV</span>
+                <span class="badge">Temps r&eacute;el</span>
+                <span class="badge">Support</span>
+              </div>
+            </article>
+
+            <div class="admin-signal-grid">
+              <article class="card admin-signal-card">
+                <span class="admin-signal-label">Dernier message</span>
+                <strong class="admin-signal-value" id="adminSignalLastMessage">Aucun</strong>
+                <p class="admin-signal-note" id="adminSignalLastMessageNote">Bo&icirc;te de r&eacute;ception vide.</p>
+              </article>
+
+              <article class="card admin-signal-card">
+                <span class="admin-signal-label">Etat des logs</span>
+                <strong class="admin-signal-value" id="adminSignalLogStatus">En attente</strong>
+                <p class="admin-signal-note" id="adminSignalLogNote">Aucun journal charg&eacute;.</p>
+              </article>
+
+              <article class="card admin-signal-card">
+                <span class="admin-signal-label">Derni&egrave;re actualisation</span>
+                <strong class="admin-signal-value" id="adminSignalRefresh">Jamais</strong>
+                <p class="admin-signal-note" id="adminSignalRefreshNote">Connexion ou action manuelle requise.</p>
+              </article>
+
+              <article class="card admin-signal-card">
+                <span class="admin-signal-label">Recherche active</span>
+                <strong class="admin-signal-value" id="adminSignalSearch">Aucune</strong>
+                <p class="admin-signal-note" id="adminSignalSearchNote">Toutes les entr&eacute;es sont visibles.</p>
+              </article>
+            </div>
+
+            <div class="admin-metrics">
+              <article class="card admin-panel">
+                <div class="admin-metric-head">
+                  <h3>Visites</h3>
+                  <div class="admin-metric-actions">
+                    <span class="admin-metric-range" id="adminVisitsRange">14 derniers jours</span>
+                    <button class="btn small ghost" id="adminExportVisits" type="button">Exporter CSV</button>
+                  </div>
+                </div>
+                <div class="admin-metric-values">
+                  <div>
+                    <div class="admin-metric-value" id="adminVisitsTotal">0</div>
+                    <span class="admin-metric-label">Visites totales</span>
+                  </div>
+                  <div>
+                    <div class="admin-metric-value" id="adminVisitsUnique">0</div>
+                    <span class="admin-metric-label">Visiteurs uniques</span>
+                  </div>
+                </div>
+                <div class="admin-chart">
+                  <canvas id="adminVisitsChart" width="640" height="200" role="img" aria-label="Graphique des visites"></canvas>
+                </div>
+              </article>
+            </div>
+
+            <div class="admin-grid">
+              <article class="card admin-panel">
+                <div class="admin-logs-head">
+                  <div>
+                    <h3>Logs serveur</h3>
+                    <span class="admin-log-file" id="adminLogFileLabel"></span>
+                  </div>
+                  <div class="admin-log-controls">
+                    <label for="adminLogFile">Fichier</label>
+                    <select id="adminLogFile">
+                      <option value="app">app.log</option>
+                      <option value="error">error.log</option>
+                      <option value="access">access.log</option>
+                    </select>
+                  </div>
+                </div>
+                <pre class="admin-log" id="adminLogs"></pre>
+              </article>
+
+              <article class="card admin-panel">
+                <div class="admin-panel-head">
+                  <div>
+                    <h3>Messages envoy&eacute;s</h3>
+                    <p class="muted admin-count" id="adminMessagesCount">0 message</p>
+                  </div>
+                  <button class="btn small ghost" id="adminExportMessages" type="button">Exporter CSV</button>
+                </div>
+
+                <div class="admin-panel-controls">
+                  <input class="admin-search" id="adminSearch" type="search" placeholder="Rechercher un message..." autocomplete="off" aria-label="Rechercher un message">
+                  <div class="admin-pagination">
+                    <button class="btn small ghost" id="adminPrevPage" type="button">Pr&eacute;c&eacute;dent</button>
+                    <span class="admin-page-info" id="adminPageInfo">Page 1 / 1</span>
+                    <button class="btn small" id="adminNextPage" type="button">Suivant</button>
+                  </div>
+                </div>
+
+                <div class="admin-messages" id="adminMessages"></div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="scripts/admin.js?v=20260306-polish1" defer></script>
+</body>
+</html>
