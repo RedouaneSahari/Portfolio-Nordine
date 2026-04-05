@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://redouanesahari.github.io/Portfolio-Nordine/sitemap.xml
