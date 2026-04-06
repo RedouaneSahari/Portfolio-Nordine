@@ -4171,3 +4171,25 @@ body[data-admin-only="true"] .admin-log-controls select:focus-visible {
     opacity: 0.45;
   }
 }
+@media (max-width: 980px), (pointer: coarse) {
+  body:not([data-admin-only="true"])::after,
+  body:not([data-admin-only="true"]) .page::before,
+  body:not([data-admin-only="true"]) .page::after,
+  body:not([data-admin-only="true"]) .futuristic-bg,
+  body:not([data-admin-only="true"]) .futuristic-core,
+  body:not([data-admin-only="true"]) .futuristic-ring,
+  body:not([data-admin-only="true"]) .futuristic-beam,
+  .scene-3d-bg,
+  .hero-3d-layer,
+  .hero-3d-layer::before,
+  .hero-3d-layer::after,
+  .hero-ring,
+  .hero-cube,
+  .hero-haze {
+    display: none !important;
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 0 !important;
+  }
+}

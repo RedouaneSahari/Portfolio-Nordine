@@ -2,6 +2,20 @@
   const canvas = document.querySelector("#scene3DBackground");
   if (!canvas) return;
 
+  const mobilePointerQuery = window.matchMedia("(pointer: coarse)");
+  const mobileViewportQuery = window.matchMedia("(max-width: 980px)");
+  const mobileHardwareThreads = Number(window.navigator.hardwareConcurrency || 8);
+  const mobileDeviceMemory = Number(window.navigator.deviceMemory || 8);
+  const disableSceneOnMobile =
+    mobilePointerQuery.matches ||
+    mobileViewportQuery.matches ||
+    mobileHardwareThreads <= 4 ||
+    mobileDeviceMemory <= 4;
+
+  if (disableSceneOnMobile) {
+    canvas.style.display = "none";
+    return;
+  }
   const context = canvas.getContext("2d", {
     alpha: true,
     desynchronized: true,
@@ -987,3 +1001,5 @@
     start();
   }
 })();
+
+
