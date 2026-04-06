@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /admin
-Sitemap: https://portfolio-pro-nordine.fr/sitemap.xml
+Sitemap: https://redouanesahari.github.io/Portfolio-Nordine/sitemap.xml
