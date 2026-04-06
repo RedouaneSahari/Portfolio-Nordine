@@ -1,4 +1,13 @@
-﻿const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+const narrowViewportQuery = window.matchMedia("(max-width: 980px)");
+const hardwareThreads = Number(window.navigator.hardwareConcurrency || 8);
+const deviceMemory = Number(window.navigator.deviceMemory || 8);
+
+const prefersReducedMotion = () => reducedMotionQuery.matches;
+const isLowPowerDevice = () => hardwareThreads <= 4 || deviceMemory <= 4;
+const shouldUseLiteMotion = () =>
+  prefersReducedMotion() || coarsePointerQuery.matches || narrowViewportQuery.matches || isLowPowerDevice();
 
 const createTracker = () => {
   return () => {};
@@ -23,7 +32,7 @@ const setupReveal = () => {
     item.style.setProperty("--delay", delay);
   });
 
-  if (prefersReducedMotion) {
+  if (shouldUseLiteMotion()) {
     revealItems.forEach((item) => item.classList.add("is-visible"));
     return;
   }
@@ -85,7 +94,7 @@ const setupScrollProgress = () => {
 
 const setupParallax = () => {
   const targets = document.querySelectorAll("[data-parallax]");
-  if (prefersReducedMotion || !targets.length) return () => {};
+  if (shouldUseLiteMotion() || !targets.length) return () => {};
 
   const update = () => {
     const scrollTop = window.scrollY;
@@ -100,7 +109,7 @@ const setupParallax = () => {
 
 const setupHeroGlow = () => {
   const hero = document.querySelector(".hero");
-  if (!hero || prefersReducedMotion) return;
+  if (!hero || shouldUseLiteMotion()) return;
   if (!window.matchMedia("(pointer: fine)").matches) return;
 
   hero.addEventListener("mousemove", (event) => {
@@ -132,7 +141,7 @@ const setupInterfaceTelemetry = () => {
     body.classList.toggle("is-scrolled", window.scrollY > 24);
   };
 
-  if (body.dataset.adminOnly === "true" || prefersReducedMotion) {
+  if (body.dataset.adminOnly === "true" || shouldUseLiteMotion()) {
     updateScrollState();
     return updateScrollState;
   }
@@ -168,7 +177,7 @@ const setupInterfaceTelemetry = () => {
 const setupInteractiveSurfaces = () => {
   const body = document.body;
   if (!body || body.dataset.adminOnly === "true") return;
-  if (prefersReducedMotion || !window.matchMedia("(pointer: fine)").matches) {
+  if (shouldUseLiteMotion() || !window.matchMedia("(pointer: fine)").matches) {
     return;
   }
 
@@ -200,6 +209,7 @@ const setupNavSmoothScroll = () => {
   const getHeaderOffset = () => (header ? header.offsetHeight + 16 : 0);
 
   const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+  const useNativeScroll = () => shouldUseLiteMotion();
 
   const animateScroll = (targetY) => {
     const startY = window.scrollY;
@@ -230,8 +240,18 @@ const setupNavSmoothScroll = () => {
       event.preventDefault();
       const targetTop =
         target.getBoundingClientRect().top + window.scrollY - getHeaderOffset();
-      animateScroll(Math.max(targetTop, 0));
-      history.pushState(null, "", href);
+      const nextTop = Math.max(targetTop, 0);
+
+      if (useNativeScroll()) {
+        window.scrollTo({
+          top: nextTop,
+          behavior: "smooth",
+        });
+      } else {
+        animateScroll(nextTop);
+      }
+
+      history.replaceState(null, "", href);
       trackPageView(`${window.location.pathname}${href}`);
     });
   });

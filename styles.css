@@ -3860,23 +3860,34 @@ body[data-admin-only="true"] .admin-log-controls select:focus-visible {
   }
 
   .scene-3d-bg {
-    opacity: 0.68;
+    opacity: 0.12;
+    filter: blur(8px);
   }
 
   .hero-3d-layer {
-    opacity: 0.82;
+    opacity: 0.18;
+    transform: none;
+    animation: none;
+  }
+
+  .hero-3d-layer::before,
+  .hero-3d-layer::after,
+  .hero-ring,
+  .hero-cube,
+  .hero-haze,
+  body:not([data-admin-only="true"]) .futuristic-core,
+  body:not([data-admin-only="true"]) .futuristic-ring,
+  body:not([data-admin-only="true"]) .futuristic-beam {
+    animation: none !important;
+    transition: none !important;
   }
 
   .hero-ring-two,
-  .hero-cube-b {
+  .hero-cube-b,
+  .hero-ring-one,
+  .hero-cube-a,
+  .hero-haze {
     display: none;
-  }
-
-  .hero-ring-one {
-    width: 280px;
-    height: 280px;
-    top: -86px;
-    right: -92px;
   }
 
   .cards.three {
@@ -4072,6 +4083,26 @@ body[data-admin-only="true"] .admin-log-controls select:focus-visible {
   }
 }
 
+@media (pointer: coarse) {
+  .scene-3d-bg {
+    opacity: 0.12;
+    filter: blur(8px);
+  }
+
+  .hero-3d-layer,
+  .hero-3d-layer::before,
+  .hero-3d-layer::after,
+  .hero-ring,
+  .hero-cube,
+  .hero-haze,
+  body:not([data-admin-only="true"]) .futuristic-core,
+  body:not([data-admin-only="true"]) .futuristic-ring,
+  body:not([data-admin-only="true"]) .futuristic-beam {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   body:not([data-force-motion="true"]) * {
     animation: none !important;
@@ -4097,7 +4128,3 @@ body[data-admin-only="true"] .admin-log-controls select:focus-visible {
     opacity: 0.45;
   }
 }
-
-
-
-

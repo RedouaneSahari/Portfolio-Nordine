@@ -14,14 +14,19 @@
 
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   const finePointerQuery = window.matchMedia("(pointer: fine)");
+  const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+  const narrowViewportQuery = window.matchMedia("(max-width: 980px)");
   const root = document.documentElement;
   const forceMotion = document.body?.dataset.forceMotion === "true";
   const hero = document.querySelector(".hero");
-  const isReducedMotion = () => reducedMotionQuery.matches && !forceMotion;
 
   const hardwareThreads = Number(window.navigator.hardwareConcurrency || 8);
   const deviceMemory = Number(window.navigator.deviceMemory || 8);
   const lowPowerDevice = hardwareThreads <= 4 || deviceMemory <= 4;
+  const isLiteMode = () =>
+    coarsePointerQuery.matches || narrowViewportQuery.matches || lowPowerDevice;
+  const isReducedMotion = () =>
+    (reducedMotionQuery.matches && !forceMotion) || isLiteMode();
 
   const meshTemplates = {
     cube: {
@@ -775,7 +780,10 @@
   const setCanvasSize = () => {
     const nextWidth = window.innerWidth;
     const nextHeight = window.innerHeight;
-    const nextDpr = Math.min(window.devicePixelRatio || 1, lowPowerDevice ? 1.4 : 2);
+    const nextDpr = Math.min(
+      window.devicePixelRatio || 1,
+      isLiteMode() ? 1 : lowPowerDevice ? 1.4 : 2
+    );
 
     state.width = nextWidth;
     state.height = nextHeight;
@@ -947,6 +955,8 @@
   };
 
   attachMediaListener(reducedMotionQuery, onReducedMotionChange);
+  attachMediaListener(coarsePointerQuery, onReducedMotionChange);
+  attachMediaListener(narrowViewportQuery, onReducedMotionChange);
 
   const onFinePointerChange = () => {
     if (!finePointerQuery.matches) {
