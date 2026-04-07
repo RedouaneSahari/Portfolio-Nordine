@@ -318,6 +318,7 @@ const setupThemeToggle = () => {
   const prefersDarkQuery = window.matchMedia
     ? window.matchMedia("(prefers-color-scheme: dark)")
     : null;
+  let themeSwitchTimer = 0;
 
   const getStoredTheme = () => {
     try {
@@ -330,6 +331,9 @@ const setupThemeToggle = () => {
 
   const applyTheme = (mode) => {
     const isDark = mode === "dark";
+    document.body.classList.add("theme-switching");
+    window.clearTimeout(themeSwitchTimer);
+
     if (isDark) {
       root.setAttribute("data-theme", "dark");
       toggle.textContent = "Mode clair";
@@ -343,6 +347,11 @@ const setupThemeToggle = () => {
     if (themeMeta) {
       themeMeta.setAttribute("content", isDark ? "#0f1a24" : "#d9e3ea");
     }
+
+    void document.body.offsetHeight;
+    themeSwitchTimer = window.setTimeout(() => {
+      document.body.classList.remove("theme-switching");
+    }, 180);
   };
 
   const resolveSystemTheme = () =>

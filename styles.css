@@ -429,6 +429,12 @@ body.nav-open {
   overflow: hidden;
 }
 
+body.theme-switching *,
+body.theme-switching *::before,
+body.theme-switching *::after {
+  transition: none !important;
+}
+
 .nav-toggle {
   display: none;
   align-items: center;
@@ -3899,8 +3905,8 @@ body[data-admin-only="true"] .admin-log-controls select:focus-visible {
   body:not([data-admin-only="true"]) .contact-card::after,
   body:not([data-admin-only="true"]) .timeline-card::after,
   body:not([data-admin-only="true"]) .quote-featured::after {
-    opacity: 0.22;
-    inset: auto -12% -48% auto;
+    display: none !important;
+    opacity: 0 !important;
     transform: none !important;
   }
 
@@ -3911,6 +3917,18 @@ body[data-admin-only="true"] .admin-log-controls select:focus-visible {
   body:not([data-admin-only="true"]) .timeline-card:hover,
   body:not([data-admin-only="true"]) .faq-item:hover {
     transform: none !important;
+  }
+
+  .hero-panel {
+    background:
+      linear-gradient(180deg, var(--surface-98), var(--surface-88)),
+      radial-gradient(circle at 18% 18%, var(--accent-a-12), transparent 34%);
+    border: 1px solid var(--line-soft);
+    box-shadow:
+      0 18px 32px rgba(12, 22, 32, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    transform-style: flat;
+    will-change: auto;
   }
 
   .hero-3d-layer::before,
