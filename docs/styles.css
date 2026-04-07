@@ -3863,6 +3863,17 @@ body[data-admin-only="true"] .admin-log-controls select:focus-visible {
   .hero {
     grid-template-columns: 1fr;
     padding: 32px;
+    background-image: none;
+    background-color: #f4f7f9;
+  }
+
+  :root[data-theme="dark"] .hero {
+    background-color: #101112;
+  }
+
+  .hero::before,
+  .hero::after {
+    display: none !important;
   }
 
   .scene-3d-bg {
@@ -3920,15 +3931,24 @@ body[data-admin-only="true"] .admin-log-controls select:focus-visible {
   }
 
   .hero-panel {
-    background:
-      linear-gradient(180deg, var(--surface-98), var(--surface-88)),
-      radial-gradient(circle at 18% 18%, var(--accent-a-12), transparent 34%);
-    border: 1px solid var(--line-soft);
+    background-image: none;
+    background-color: #ffffff;
+    border: 1px solid rgba(28, 31, 35, 0.08);
     box-shadow:
       0 18px 32px rgba(12, 22, 32, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
     transform-style: flat;
     will-change: auto;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  :root[data-theme="dark"] .hero-panel {
+    background-color: #121212;
+    border-color: rgba(212, 175, 55, 0.12);
+    box-shadow:
+      0 18px 32px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
   .hero-3d-layer::before,
