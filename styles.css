@@ -3811,6 +3811,29 @@ body[data-admin-only="true"] .admin-log-controls select:focus-visible {
     border-radius: 24px;
     padding: 12px 16px;
     gap: 12px;
+    background-image: none;
+    background-color: #ffffff;
+    border: 1px solid rgba(28, 31, 35, 0.08);
+    box-shadow:
+      0 16px 30px rgba(20, 32, 41, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  :root[data-theme="dark"] .site-header {
+    background-color: #121212;
+    border-color: rgba(212, 175, 55, 0.12);
+    box-shadow:
+      0 16px 30px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .site-header::before,
+  .site-header::after {
+    display: none !important;
   }
 
   .nav-toggle {
