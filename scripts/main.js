@@ -342,12 +342,44 @@ const setupThemeToggle = () => {
   if (!toggle) return;
 
   const root = document.documentElement;
+  const body = document.body;
+  const header = document.querySelector(".site-header");
   const storageKey = "theme";
   const themeMeta = document.querySelector("meta[name='theme-color']");
   const prefersDarkQuery = window.matchMedia
     ? window.matchMedia("(prefers-color-scheme: dark)")
     : null;
   let themeSwitchTimer = 0;
+
+  const syncMobileThemeSurfaces = (isDark) => {
+    const isMobileThemeSurface = coarsePointerQuery.matches || narrowViewportQuery.matches;
+
+    if (!isMobileThemeSurface) {
+      if (header) {
+        header.style.background = "";
+        header.style.borderColor = "";
+        header.style.boxShadow = "";
+        header.style.backdropFilter = "";
+        header.style.webkitBackdropFilter = "";
+      }
+      body.style.background = "";
+      return;
+    }
+
+    body.style.background = isDark ? "#0b0c0e" : "#dfe9ef";
+
+    if (!header) return;
+
+    header.style.background = isDark ? "#121212" : "#ffffff";
+    header.style.borderColor = isDark
+      ? "rgba(212, 175, 55, 0.12)"
+      : "rgba(28, 31, 35, 0.08)";
+    header.style.boxShadow = isDark
+      ? "0 16px 30px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.04)"
+      : "0 16px 30px rgba(20, 32, 41, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.14)";
+    header.style.backdropFilter = "none";
+    header.style.webkitBackdropFilter = "none";
+  };
 
   const getStoredTheme = () => {
     try {
@@ -377,6 +409,7 @@ const setupThemeToggle = () => {
       themeMeta.setAttribute("content", isDark ? "#0f1a24" : "#d9e3ea");
     }
 
+    syncMobileThemeSurfaces(isDark);
     void document.body.offsetHeight;
     themeSwitchTimer = window.setTimeout(() => {
       document.body.classList.remove("theme-switching");
@@ -401,6 +434,18 @@ const setupThemeToggle = () => {
       prefersDarkQuery.addListener(handleSystemThemeChange);
     }
   }
+
+  const handleViewportThemeSurfaceChange = () => {
+    syncMobileThemeSurfaces(root.getAttribute("data-theme") === "dark");
+  };
+
+  [coarsePointerQuery, narrowViewportQuery].forEach((query) => {
+    if (typeof query.addEventListener === "function") {
+      query.addEventListener("change", handleViewportThemeSurfaceChange);
+    } else if (typeof query.addListener === "function") {
+      query.addListener(handleViewportThemeSurfaceChange);
+    }
+  });
 
   toggle.addEventListener("click", () => {
     const isDark = root.getAttribute("data-theme") === "dark";
