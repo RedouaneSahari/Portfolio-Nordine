@@ -3788,6 +3788,20 @@ body[data-admin-only="true"] .admin-log-controls select:focus-visible {
 }
 
 @media (max-width: 980px) {
+  html,
+  body {
+    background-image: none !important;
+  }
+
+  body::before,
+  body::after,
+  body:not([data-admin-only="true"])::after,
+  body:not([data-admin-only="true"]) .page::before,
+  body:not([data-admin-only="true"]) .page::after {
+    display: none !important;
+    opacity: 0 !important;
+  }
+
   body:not([data-admin-only="true"]) .page::before {
     opacity: 0.48;
   }
@@ -4080,8 +4094,11 @@ body[data-admin-only="true"] .admin-log-controls select:focus-visible {
     display: none;
   }
 
+  body::before,
+  body::after,
   body:not([data-admin-only="true"])::after {
-    opacity: 0.58;
+    display: none !important;
+    opacity: 0 !important;
   }
 
   .page {

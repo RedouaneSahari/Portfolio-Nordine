@@ -315,6 +315,7 @@ const setupThemeToggle = () => {
   const root = document.documentElement;
   const body = document.body;
   const header = document.querySelector(".site-header");
+  const page = document.querySelector(".page");
   const storageKey = "theme";
   const themeMeta = document.querySelector("meta[name='theme-color']");
   const prefersDarkQuery = window.matchMedia
@@ -326,6 +327,7 @@ const setupThemeToggle = () => {
     const isMobileThemeSurface = coarsePointerQuery.matches || narrowViewportQuery.matches;
 
     if (!isMobileThemeSurface) {
+      root.style.background = "";
       if (header) {
         header.style.background = "";
         header.style.borderColor = "";
@@ -334,10 +336,17 @@ const setupThemeToggle = () => {
         header.style.webkitBackdropFilter = "";
       }
       body.style.background = "";
+      if (page) {
+        page.style.background = "";
+      }
       return;
     }
 
+    root.style.background = isDark ? "#0b0c0e" : "#dfe9ef";
     body.style.background = isDark ? "#0b0c0e" : "#dfe9ef";
+    if (page) {
+      page.style.background = "transparent";
+    }
 
     if (!header) return;
 
